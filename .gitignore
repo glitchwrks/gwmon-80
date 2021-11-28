@@ -5,3 +5,4 @@
 # Ignore assembler output
 *.prn
 *.com
+*.hex
