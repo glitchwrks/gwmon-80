@@ -27,8 +27,8 @@ CSTART:	MVI	A, 010H		;Turn off ROM at 0x0000
 
 	INCLUDE	'sm.inc'	;The small monitor
 	INCLUDE	'scmdstd.inc'	;SM standard commnads
-	INCLUDE 'scmdnull.inc'	;Command table terminator
+	INCLUDE	'scmdnull.inc'	;Command table terminator
 
-	INCLUDE 'i8251.inc'	;Generic Motorola 6850 ACIA I/O
+	INCLUDE	'i8251.inc'	;Generic Motorola 6850 ACIA I/O
 
 	END
