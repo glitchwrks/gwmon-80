@@ -1,9 +1,6 @@
 GWMON-80
 ========
 
-What is this?
--------------
-
 GWMON-80 is intended to be a simple ROM-type system monitor for systems utilizing processors that are binary-compatible with the 8080, including (but not limited to) 8085 and Z80 systems. It is written in a modular format so that it can be extended for use with specific system hardware with ease. It is being developed and released under the GNU GPLv3 as open source software (see LICENSE and/or GPL-3.0 in project root for more information).
 
 Contributing
