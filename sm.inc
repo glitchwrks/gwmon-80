@@ -8,12 +8,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Small Monitor Equates
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DYNOUT	equ	STACK - 3
-DYNIN	equ	STACK - 6
+DYNIN	equ	STACK - 3
+DYNOUT	equ	STACK - 6
 
-	INCLUDE	'vectors.inc'
-
-CSTART:	LXI	SP, STACK	;Set up stack pointer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;SMSTRT -- SM cold start routine
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+SMSTRT:	LXI	SP, STACK	;Set up stack pointer
 
 	LXI	H, 0C9D3H	;Prime area above "real" stack
 	PUSH	H		;for dynamic IN and OUT
@@ -24,14 +25,25 @@ CSTART:	LXI	SP, STACK	;Set up stack pointer
 	CALL	IOSET		;Do I/O module setup
 	LXI	H, SIGNON$	;SM signon
 	CALL	PRTSTR
-WSTART:
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;WSTART -- Warm start routine
+;
+;Falls through to the command processor.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+WSTART: LXI	SP, STACK - 6	;Reload stack pointer, don't clobber
+				;dynamic IN/OUT area
 
 	INCLUDE	'scp.inc'
 	INCLUDE	'common.inc'
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Small Monitor Strings
+;
+;These strings are terminated by setting the high bit in the
+;last character.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-SIGNON$:	db CR, LF, LF, 'GWMON-80 0.9 SM'
-CSERR$:		db 'CHECKSUM '
-ERR$:		db 'ERROR', 0
+SIGNON$:	db 'GWMON-80 0.9 S', 'M' + 80H
+PROMPT$:	db LF, '>' + 80H
+CSERR$:		db 'CKSUM '
+ERR$:		db 'ERRO', 'R' + 80H

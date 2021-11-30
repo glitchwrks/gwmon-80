@@ -8,3 +8,4 @@ JMPTAB:	JMP	CSTART		;Cold start, initializes hardware
 	JMP	WSTART		;Warm start
 	JMP	COUT		;Output A register to console
 	JMP	CIN		;Input A register from console, waits
+CSTART:	

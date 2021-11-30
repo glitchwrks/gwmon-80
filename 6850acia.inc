@@ -33,17 +33,6 @@ CINNE:	IN	CTLPRT
 	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;CIN -- Get a char from the console and echo
-;
-;pre: console device is initialized
-;post: received char is in A register
-;post: received char is echoed
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CIN:	CALL	CINNE
-	OUT	DATPRT
-	RET
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;COUT -- Output a character to the console
 ;
 ;pre: A register contains char to be printed

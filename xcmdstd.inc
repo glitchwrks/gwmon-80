@@ -20,7 +20,7 @@ EDTCMD: HLT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;CMDLST -- Linked list of commands
 ;
-;This data *must* be the last item in XCMDS.INC to allow
+;This data *must* be the last item in XCMDSTD.INC to allow
 ;chaining of additional command lists.
 ;
 ;List entry structure:

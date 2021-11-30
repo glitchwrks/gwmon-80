@@ -18,6 +18,17 @@ NEXTLOC	equ	CR		;Keystroke for next location in E
 				;defaults to CR
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;CIN -- Get a char from the console and echo
+;
+;pre: console device is initialized
+;post: received char is in A register
+;post: received char is echoed
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CIN:	CALL	CINNE
+	CALL	COUT
+	RET
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;HEXBYT -- Convert pair of ASCII characters to byte
 ;
 ;pre: H register contains high ASCII coded hex nybble
@@ -47,11 +58,9 @@ HEXBYT:	MOV	A, H
 ;post: A register contains nybble
 ;post: CY flag set if ASCII character is invalid hex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-ASCHEX:	CPI	'0'		;Less than '0'?
-	RC			;Yes, CY set, return
-	SUI	'0'		;ASCII to decimal bias
+ASCHEX:	SUI	'0'		;ASCII to decimal bias
+	RC			;Return if less than '0'
 	CPI	0AH
-	STC			;Set CY to known state
 	CMC			;Clear CY
 	RM			;0x0 - 0x9, done
 	ANI	5FH		;Upcase
@@ -89,7 +98,7 @@ HEXDMP:	CALL	CRLF
 ;post: memory from HL to HL + 16 printed to console
 ;post: HL incremented to HL + 16
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DUMP16:	CALL	ADROUT
+DUMP16:	CALL	PRTADR
 	MVI	C, 10H
 DUMP11:	CALL	PRTSPC
 	CALL	DMPLOC
@@ -99,18 +108,7 @@ DUMP11:	CALL	PRTSPC
 	JMP	DUMP11
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;DMPLOC -- Print a byte at HL to console
-;
-;Returns through PRTHEX.
-;
-;pre: HL pair contains address of byte
-;post: byte at HL printed to console
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DMPLOC:	MOV	A, M
-	JMP	PRTHEX
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;ADROUT -- Print an address to the console
+;PRTADR -- Print an address to the console
 ;
 ;Prints a 16-bit address, a space, and a colon. Destroys
 ;A register contents.
@@ -120,13 +118,22 @@ DMPLOC:	MOV	A, M
 ;pre: HL pair contains address to print
 ;post: HL printed to console as hex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-ADROUT: MOV	A, H
+PRTADR: MOV	A, H
 	CALL	PRTHEX
 	MOV	A, L
 	CALL	PRTHEX
-	CALL	PRTSPC
 	MVI	A, ':'
 	JMP	COUT
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;DMPLOC -- Print a byte at HL to console
+;
+;Falls through to PRTHEX.
+;
+;pre: HL pair contains address of byte
+;post: byte at HL printed to console
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DMPLOC:	MOV	A, M
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;PRTHEX -- Output byte to console as hex
@@ -185,21 +192,21 @@ CRLF:	MVI	A, CR
 	JMP	COUT
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;PRTSTR -- Print a null-terminated string
+;PRTSTR -- Print a high bit terminated string
+;
+;CR, LF is printed before all strings.
 ;
 ;Destroys contents of A register.
 ;
-;pre: HL contains pointer to start of null-terminated string
+;pre: HL contains pointer to start of string
 ;post: string at HL printed to console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PRTSTR:	MOV	A, M
-	ORA	A		;Set flags
-	RZ			;A == 0x00, done
+PRTSTR:	CALL	CRLF
+PRTST1:	MOV	A, M
+	ANI	07FH		;Strip high bit
 	CALL	COUT
+	MOV	A, M
+	ORA	A		;Set flags
+	RM			;High bit set, done
 	INX	H
-	JMP	PRTSTR
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;Common Monitor Strings
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PROMPT$:	db CR, LF, LF, '>', 0
+	JMP	PRTST1
