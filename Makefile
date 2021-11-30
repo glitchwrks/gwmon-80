@@ -1,5 +1,3 @@
-AFLAGS		= -t none
-LFLAGS		= -t none
 RMFLAGS		= -f
 
 ASM		= a85
