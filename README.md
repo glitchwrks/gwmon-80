@@ -3,18 +3,41 @@ GWMON-80
 
 GWMON-80 is intended to be a simple ROM-type system monitor for systems utilizing processors that are binary-compatible with the 8080, including (but not limited to) 8085 and Z80 systems. It is written in a modular format so that it can be extended for use with specific system hardware with ease. It is being developed and released under the GNU GPLv3 as open source software (see LICENSE and/or GPL-3.0 in project root for more information).
 
-Contributing
-------------
+Components
+----------
 
-Contributions can be made to any part of this code; however, we're especially encouraging people to contribute their I/O modules and system customizations. A wide variety of I/O modules make this monitor useful to more people without having to write their own modules.
+GWMON-80 is composed of the following components:
 
-### I/O Modules
+    * Vectors: consistent entry points to GWMON-80
+    * Core monitor: either SM (Small Monitor) or XM (eXtended Monitor)
+    * I/O modules: generic console device drivers
+    * Command set(s): command structures and handlers
+    * Customizations: machine-specific implementations
 
-I/O Modules should assemble under our fork of the [A85 assembler](https://github.com/glitchwrks/a85). Intel mnemonics are thus a requirement. If an I/O module is particular to a very restricted set of hardware (i.e. a system that cannot have more than one type/revision of processor), I/O modules may include opcodes from instruction sets that extend that of the 8080. Keeping to the 8080 Instruction Set Architecture is preferred.
+### Vectors
+
+Starting with GWMON-80 0.9, vectors are provided at the beginning of the monitor in the form of a jump table. Standard vectors are:
+
+    * CSTART at ORG + 0: cold start routine
+    * WSTART at ORG + 3: warm start routine
+    * COUT at ORG + 6: output a character to console
+    * CIN at ORG + 9: wait for and input a character from console
 
 ### Core Monitor
 
-The core monitor code should assemble under our fork of the [A85 assembler](https://github.com/glitchwrks/a85). Intel mnemonics are a requirement. The core monitor code *MUST* be 8080 compatible; therefore, no opcodes from instruction sets that extend that of the 8080 may be used. Contributions using non-8080 opcodes will be rejected. If you wish to optimize the core monitor code for your specific architecture, please fork the project.
+There are two options available for the core monitor: SM (Small Monitor) or XM (eXtended Monitor). Currently, only SM is recommended as XM is still under development. SM has the advantage of being simpler and much smaller: most customizations using SM are 512 bytes or less.
+
+### I/O Modules
+
+I/O modules contain the routines necessary to initialize the console I/O device, receive characters from it, and transmit characters to it. They are generic implementations for a given device; for example, `6850acia.inc` provides the routines for talking to any system using an I/O mapped Motorola 6850 ACIA.
+
+### Command Sets
+
+Command sets provide data structures that define commands. The SM and XM default command sets (`scmdstd.inc` and `xcmdstd.inc`, respectively) also provide the default command sets for those core monitors. Command sets are chainable such that additional commands can be added into a given customization. Command sets are terminated by a "NULL command," which is monitor-specific and should be included after all other command sets.
+
+### Customizations
+
+Customizations tie together vectors, a core monitor, I/O module, and one or more command sets into a machine-specific implementation of GWMON-80. See `smmits1.asm` for an example of a basic customization of the SM for the MITS 88-2SIO with the standard SM command set.
 
 Installation
 ------------
@@ -59,7 +82,7 @@ After invoking the loader, paste your Intel HEX file into the terminal or do an 
 Writing I/O Modules
 -------------------
 
-I/O modules need to implement a few named subroutines:
+I/O modules need to implement three named subroutines:
 
 * `IOSET` prepares the console device for use
 * `CINNE` inputs a char from the console, don't echo
@@ -69,6 +92,17 @@ IOSET should initialize console device, if the devices are not already initializ
 
 `CINNE` and `COUT` are character I/O routines for your console device (`CIN`, input with echo, is implemented elsewhere). They should not modify any registers other than the A register, so push everything else to the stack and pop it off after your routine. Both of these subroutines should terminate in a RET instruction. It's usually good practice to have CIN call CINNE.
 
+Writing Customizations
+----------------------
+
+In addition to bringing together the components of GWMON-80, a customization should:
+
+    * Set the required I/O module parameters
+    * Set the stack starting address
+    * Set the ORG for GWMON-80
+
+See `smmits1.asm` for a simple example of how to piece together a customization for a simple system.
+
 Tools
 -----
 
@@ -76,3 +110,10 @@ The `tools/` directory contains utilties for working with GWMON-80:
 
 * `gwmon2bin.rb` is a Ruby script for converting GWMON-80 `D` command dumps to binary files
 * `gwmon2bin_sample.txt` is a sample `D` command dump for use with `gwmon2bin.rb`
+
+Contributing
+------------
+
+Contributions can be made to any part of this code; however, we're especially encouraging people to contribute their I/O modules and system customizations. A wide variety of I/O modules make this monitor useful to more people without having to write their own modules.
+
+Any contributed code should assemble with our fork of the [A85 assembler](https://github.com/glitchwrks/a85). Intel mnemonics are a requirement. If you wish to optimize the core monitor for another architecture such as Z80, please fork the project.
