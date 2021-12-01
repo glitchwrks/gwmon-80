@@ -52,7 +52,9 @@ The SM command processor automatically inserts the spaces after each element. So
 
 No returns or spaces are typed in the commands. This is very similar to the NorthStar ROM monitor, most likely because it's about the simplest way to implement. Input is auto-downcased, so you can type entries in either (or even mixed) case.
 
-The Intel HEX loader expects 16-bit addresses. It behaves as an Intel loader should, allowing empty blocks in the middle to be skipped. It will accept either UNIX-style LF endings or DOS/Windows CR/LF endings. The loader will accept an EOF (After invoking the loader, paste your Intel HEX file into the terminal or do an ASCII upload (depending on your terminal program).
+The Intel HEX loader expects 16-bit addresses. It behaves as an Intel loader should, allowing empty blocks in the middle to be skipped. It will accept either UNIX-style LF endings or DOS/Windows CR/LF endings. The loader will accept an `EOF` (End of File, `0x01`) record or a data record (`0x00`) with zero length as the terminating condition.
+
+After invoking the loader, paste your Intel HEX file into the terminal or do an ASCII upload (depending on your terminal program).
 
 Writing I/O Modules
 -------------------
