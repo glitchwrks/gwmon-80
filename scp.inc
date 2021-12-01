@@ -16,7 +16,7 @@
 CMDLP:	LXI	H, WSTART	;HL = warm start address
 	PUSH	H		;Prime stack for RET
 	LXI	H, PROMPT$
-	CALL	PRTSTR
+	CALL	PRTCLS
 	CALL	CIN
 	ORI	20H		;Downcase input
 
@@ -46,7 +46,7 @@ ERROR:	LXI	H, ERR$		;Fall through to PRTERR
 ;post: string at HL printed to console
 ;post: program execution returned to command loop
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PRTERR:	CALL	PRTSTR
+PRTERR:	CALL	PRTCLS
 	JMP	WSTART		;Warm start, restore SP
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

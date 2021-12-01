@@ -24,7 +24,7 @@ SMSTRT:	LXI	SP, STACK	;Set up stack pointer
 
 	CALL	IOSET		;Do I/O module setup
 	LXI	H, SIGNON$	;SM signon
-	CALL	PRTSTR
+	CALL	PRTCLS
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;WSTART -- Warm start routine

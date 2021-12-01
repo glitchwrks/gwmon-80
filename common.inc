@@ -192,21 +192,28 @@ CRLF:	MVI	A, CR
 	JMP	COUT
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;PRTSTR -- Print a high bit terminated string
+;PRTCLS -- Print CR, LF, and a high bit terminated string
 ;
-;CR, LF is printed before all strings.
+;Falls through to PRTSTR1
+;
+;pre: HL contains pointer to start of string
+;post: CR, LF, and string at HL printed to console
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+PRTCLS:	CALL	CRLF
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;PRTSTR -- Print a high bit terminated string
 ;
 ;Destroys contents of A register.
 ;
 ;pre: HL contains pointer to start of string
 ;post: string at HL printed to console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PRTSTR:	CALL	CRLF
-PRTST1:	MOV	A, M
+PRTSTR:	MOV	A, M
 	ANI	07FH		;Strip high bit
 	CALL	COUT
 	MOV	A, M
 	ORA	A		;Set flags
 	RM			;High bit set, done
 	INX	H
-	JMP	PRTST1
+	JMP	PRTSTR
