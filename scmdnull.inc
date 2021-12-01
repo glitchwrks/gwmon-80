@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;SCMDNULL -- NULL Command
+;SCMDNULL -- SM NULL Command
 ;
 ;This should be the last command list included in a SM
 ;customization. It provides consistent termination to the
