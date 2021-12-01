@@ -8,30 +8,30 @@ Components
 
 GWMON-80 is composed of the following components:
 
-    * Vectors
-    * Core monitor, either SM (Small Monitor) or XM (eXtended Monitor)
-    * Command set(s) and handlers
-    * I/O modules
-    * Customizations
+* Vectors
+* Core monitor, either `SM` (Small Monitor) or `XM` (eXtended Monitor)
+* Command set(s) and handlers
+* I/O modules
+* Customizations
 
 ### Vectors
 
 Vectors provide consistent entry points to GWMON-80. Starting with GWMON-80 0.9, vectors are provided at the beginning of the monitor in the form of a jump table. Standard vectors are:
 
-    * CSTART at ORG + 0: cold start routine
-    * WSTART at ORG + 3: warm start routine
-    * COUT at ORG + 6: output a character to console
-    * CIN at ORG + 9: wait for and input a character from console
+* `CSTART` at `ORG + 0`: cold start routine
+* `WSTART` at `ORG + 3`: warm start routine
+* `COUT` at `ORG + 6`: output a character to console
+* `CIN` at `ORG + 9`: wait for and input a character from console
 
 Older versions of GWMON-80 provide only `CSTART` and `WSTART`.
 
 ### Core Monitor
 
-There are two options available for the core monitor: SM (Small Monitor) or XM (eXtended Monitor). Currently, only SM is recommended as XM is still under development. SM has the advantage of being simpler and much smaller: most customizations using SM are 512 bytes or less.
+There are two options available for the core monitor: `SM` (Small Monitor) or `XM` (eXtended Monitor). Currently, only `SM` is recommended as `XM` is still under development. `SM` has the advantage of being simpler and much smaller: most customizations using `SM` are 512 bytes or less.
 
 ### Command Sets and Handlers
 
-Command sets provide data structures that define commands. The SM and XM standard command sets (`scmdstd.inc` and `xcmdstd.inc`, respectively) also provide the default command handlers for those core monitors. Command sets are chainable such that additional commands can be added into a given customization. Command sets are terminated by a "NULL command," which is monitor-specific and should be included after all other command sets.
+Command sets provide data structures that define commands. The `SM` and `XM` standard command sets (`scmdstd.inc` and `xcmdstd.inc`, respectively) also provide the default command handlers for those core monitors. Command sets are chainable such that additional commands can be added into a given customization. Command sets are terminated by a "NULL command," which is monitor-specific and should be included after all other command sets.
 
 Handlers provide actual implementation of commands. The core command handlers are defined with their command sets, but additional handlers must be defined separately from their command sets to allow command set chaining.
 
@@ -41,7 +41,7 @@ I/O modules contain the routines necessary to initialize the console I/O device,
 
 ### Customizations
 
-Customizations tie together vectors, a core monitor, I/O module, and one or more command sets into a machine-specific implementation of GWMON-80. See `smmits1.asm` for an example of a basic customization of the SM for the MITS 88-2SIO with the standard SM command set.
+Customizations tie together vectors, a core monitor, I/O module, and one or more command sets into a machine-specific implementation of GWMON-80. See `smmits1.asm` for an example of a basic customization of the `SM` for the MITS 88-2SIO with the standard SM command set.
 
 Building GWMON-80
 -----------------
@@ -55,7 +55,7 @@ If a customization for your system already exists, GWMON-80 can be built using t
 SM Command Syntax
 -----------------
 
-The Small Monitor (SM) command syntax is as follows:
+The Small Monitor (`SM`) command syntax is as follows:
 
     D XXXX YYYY     Dump memory from XXXX to YYYY
     E XXXX          Edit memory starting at XXXX (CTRL+C to end)
@@ -64,9 +64,9 @@ The Small Monitor (SM) command syntax is as follows:
     O XX YY         Output to I/O port XX byte YY
     L               Load an Intel HEX file into memory
 
-`CTRL+C` may be pressed at any text entry point to cancel the current operation. Hexadecimal inputs are validated, entering a non-hex character will cancel the current operation with an `ERORR` message.
+`CTRL+C` may be pressed at any text entry point to cancel the current operation. Hexadecimal inputs are validated, entering a non-hex character will cancel the current operation with an `ERROR` message.
 
-The SM command processor automatically inserts the spaces after each element. So, to dump memory from 0x0000 to 0x000F you'd type
+The `SM` command processor automatically inserts the spaces after each element. So, to dump memory from `0x0000` to `0x000F` you'd type
 
     d0000000f
 
@@ -83,7 +83,7 @@ No returns or spaces are typed in the commands. This is very similar to the Nort
 
 ### Edit Memory
 
-The `E` command prompts for a starting address, displays the contents of the memory location, and allows input of a replacement value. Pressing `RETURN` will leave the current value unchanged and move to the next memory address. Pressinc `CTRL+C` at any time terminates the `E` command.
+The `E` command prompts for a starting address, displays the contents of the memory location, and allows input of a replacement value. Pressing `RETURN` will leave the current value unchanged and move to the next memory address. Pressing `CTRL+C` at any time terminates the `E` command.
 
 ### GO Command
 
@@ -108,7 +108,7 @@ I/O modules need to implement three named subroutines:
 * `CINNE` inputs a char from the console, don't echo
 * `COUT` outputs a char to the console
 
-IOSET should initialize console device, if the devices are not already initialized. Any system-specific setup should be implemented in the customization file, not the I/O module.
+`IOSET` should initialize console device, if the devices are not already initialized. Any system-specific setup should be implemented in the customization file, not the I/O module.
 
 `CINNE` and `COUT` are character I/O routines for your console device (`CIN`, input with echo, is implemented elsewhere). They should not modify any registers other than the A register, so push everything else to the stack and pop it off after your routine. Both of these subroutines should terminate in a RET instruction. It's usually good practice to have CIN call CINNE.
 
@@ -117,9 +117,9 @@ Writing Customizations
 
 In addition to bringing together the components of GWMON-80, a customization should:
 
-    * Set the required I/O module parameters
-    * Set the stack starting address
-    * Set the ORG for GWMON-80
+* Set the required I/O module parameters
+* Set the stack starting address
+* Set the `ORG` for GWMON-80
 
 See `smmits1.asm` for a simple example of how to piece together a customization for a simple system.
 
