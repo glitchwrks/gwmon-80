@@ -10,8 +10,8 @@ GWMON-80 is composed of the following components:
 
     * Vectors: consistent entry points to GWMON-80
     * Core monitor: either SM (Small Monitor) or XM (eXtended Monitor)
-    * I/O modules: generic console device drivers
     * Command set(s): command structures and handlers
+    * I/O modules: generic console device drivers
     * Customizations: machine-specific implementations
 
 ### Vectors
@@ -27,13 +27,13 @@ Starting with GWMON-80 0.9, vectors are provided at the beginning of the monitor
 
 There are two options available for the core monitor: SM (Small Monitor) or XM (eXtended Monitor). Currently, only SM is recommended as XM is still under development. SM has the advantage of being simpler and much smaller: most customizations using SM are 512 bytes or less.
 
-### I/O Modules
-
-I/O modules contain the routines necessary to initialize the console I/O device, receive characters from it, and transmit characters to it. They are generic implementations for a given device; for example, `6850acia.inc` provides the routines for talking to any system using an I/O mapped Motorola 6850 ACIA.
-
 ### Command Sets
 
 Command sets provide data structures that define commands. The SM and XM default command sets (`scmdstd.inc` and `xcmdstd.inc`, respectively) also provide the default command sets for those core monitors. Command sets are chainable such that additional commands can be added into a given customization. Command sets are terminated by a "NULL command," which is monitor-specific and should be included after all other command sets.
+
+### I/O Modules
+
+I/O modules contain the routines necessary to initialize the console I/O device, receive characters from it, and transmit characters to it. They are generic implementations for a given device; for example, `6850acia.inc` provides the routines for talking to any system using an I/O mapped Motorola 6850 ACIA.
 
 ### Customizations
 
