@@ -5,6 +5,11 @@
 ;Monitor for 8080/8085/Z80 and compatible.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+	LXI	H, PROMPT$
+	CALL	PRTSTR
+	CALL	READLN
+	JMP	0F800H
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;READLN -- Read a line of input from the console.
 ;
@@ -26,8 +31,10 @@ READL1:	CALL	CINNE		;Get console char, no echo
 	CPI	CR
 	RZ			;Got CR, done
 	MOV	M, A		;Not CR, add to buffer
-	INR	C		;Increment byte count
 	INX	H		;Increment buffer pointer
+	INR	C		;Increment byte count
+	MOV	A, C
+	ORA	A
 	CPI	MAXBUF		;Full?
 	JNZ	READL1		;No, get more
 	RET

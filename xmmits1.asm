@@ -10,9 +10,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CTLPRT	equ	010H		;88-2SIO channel 0 control port
 DATPRT	equ	011H		;88-2SIO channel 0 data port
-TOPMEM	equ	0C000H		;48K system
+TOPMEM	equ	09000H		;48K system
 
-	ORG	0F800H
+	ORG	09000H
 
 	INCLUDE	'xm.inc'
 	INCLUDE '6850acia.inc'

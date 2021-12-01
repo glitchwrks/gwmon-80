@@ -16,7 +16,10 @@ MAXBUF	equ	32		;Console input buffer max size
 
 	INCLUDE	'vectors.inc'
 
-CSTART:	LXI	SP, STACK	;Set up stack pointer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;XMSTRT -- XM cold start routine
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+XMSTRT:	LXI	SP, STACK	;Set up stack pointer
 
 	LXI	H, 0C9D3H	;Prime area above "real" stack
 	PUSH	H		;for dynamic IN and OUT
@@ -25,11 +28,12 @@ CSTART:	LXI	SP, STACK	;Set up stack pointer
 	PUSH	H
 
 	XRA	A		;Set up the NULL command area
-	LXI	H, TOPMEM - 16	;which terminates the command list
+	LXI	H, NULCMD	;which terminates the command list
 	MVI	C, 16		;and allows for expansion
-CSTAR1:	MOV	M, A
+XMSTR1:	MOV	M, A
 	DCR	C
-	JNZ	CSTAR1
+	INX	H
+	JNZ	XMSTR1
 
 	CALL	IOSET		;Do I/O module setup
 	LXI	H, SIGNON$	;SM signon
@@ -42,6 +46,7 @@ WSTART:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Small Monitor Strings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-SIGNON$:	db CR, LF, LF, 'GWMON-80 0.9 XM'
+SIGNON$:	db 'GWMON-80 0.9 X','M' + 80H
+PROMPT$:	db LF, 'XM', '>' + 80H
 CSERR$:		db 'CHECKSUM '
-ERR$:		db 'ERROR', 0
+ERR$:		db 'ERRO', 'R' + 80H
