@@ -8,28 +8,32 @@ Components
 
 GWMON-80 is composed of the following components:
 
-    * Vectors: consistent entry points to GWMON-80
-    * Core monitor: either SM (Small Monitor) or XM (eXtended Monitor)
-    * Command set(s): command structures and handlers
-    * I/O modules: generic console device drivers
-    * Customizations: machine-specific implementations
+    * Vectors
+    * Core monitor, either SM (Small Monitor) or XM (eXtended Monitor)
+    * Command set(s) and handlers
+    * I/O modules
+    * Customizations
 
 ### Vectors
 
-Starting with GWMON-80 0.9, vectors are provided at the beginning of the monitor in the form of a jump table. Standard vectors are:
+Vectors provide consistent entry points to GWMON-80. Starting with GWMON-80 0.9, vectors are provided at the beginning of the monitor in the form of a jump table. Standard vectors are:
 
     * CSTART at ORG + 0: cold start routine
     * WSTART at ORG + 3: warm start routine
     * COUT at ORG + 6: output a character to console
     * CIN at ORG + 9: wait for and input a character from console
 
+Older versions of GWMON-80 provide only `CSTART` and `WSTART`.
+
 ### Core Monitor
 
 There are two options available for the core monitor: SM (Small Monitor) or XM (eXtended Monitor). Currently, only SM is recommended as XM is still under development. SM has the advantage of being simpler and much smaller: most customizations using SM are 512 bytes or less.
 
-### Command Sets
+### Command Sets and Handlers
 
-Command sets provide data structures that define commands. The SM and XM default command sets (`scmdstd.inc` and `xcmdstd.inc`, respectively) also provide the default command sets for those core monitors. Command sets are chainable such that additional commands can be added into a given customization. Command sets are terminated by a "NULL command," which is monitor-specific and should be included after all other command sets.
+Command sets provide data structures that define commands. The SM and XM standard command sets (`scmdstd.inc` and `xcmdstd.inc`, respectively) also provide the default command handlers for those core monitors. Command sets are chainable such that additional commands can be added into a given customization. Command sets are terminated by a "NULL command," which is monitor-specific and should be included after all other command sets.
+
+Handlers provide actual implementation of commands. The core command handlers are defined with their command sets, but additional handlers must be defined separately from their command sets to allow command set chaining.
 
 ### I/O Modules
 
@@ -39,8 +43,8 @@ I/O modules contain the routines necessary to initialize the console I/O device,
 
 Customizations tie together vectors, a core monitor, I/O module, and one or more command sets into a machine-specific implementation of GWMON-80. See `smmits1.asm` for an example of a basic customization of the SM for the MITS 88-2SIO with the standard SM command set.
 
-Installation
-------------
+Building GWMON-80
+-----------------
 
 If a customization for your system already exists, GWMON-80 can be built using the included `Makefile`:
 
@@ -60,6 +64,8 @@ The Small Monitor (SM) command syntax is as follows:
     O XX YY         Output to I/O port XX byte YY
     L               Load an Intel HEX file into memory
 
+`CTRL+C` may be pressed at any text entry point to cancel the current operation. Hexadecimal inputs are validated, entering a non-hex character will cancel the current operation with an `ERORR` message.
+
 The SM command processor automatically inserts the spaces after each element. So, to dump memory from 0x0000 to 0x000F you'd type
 
     d0000000f
@@ -74,6 +80,20 @@ The SM command processor automatically inserts the spaces after each element. So
 ...where the xx fields are the hex representation of the bytes at those addresses.
 
 No returns or spaces are typed in the commands. This is very similar to the NorthStar ROM monitor, most likely because it's about the simplest way to implement. Input is auto-downcased, so you can type entries in either (or even mixed) case.
+
+### Edit Memory
+
+The `E` command prompts for a starting address, displays the contents of the memory location, and allows input of a replacement value. Pressing `RETURN` will leave the current value unchanged and move to the next memory address. Pressinc `CTRL+C` at any time terminates the `E` command.
+
+### GO Command
+
+`G` prompts for an address and transfers control to that address. The GWMON-80 warm start address is placed on the stack prior to control transfer, so routines may return to GWMON-80 with a `RET` as long as the stack has been preserved.
+
+### Input and Output
+
+The `I` and `O` commands allow reading and writing I/O ports. Since the Intel 8080 only includes `IN` and `OUT` instructions with immediate addressing, this is accomplished through dynamic routines located just above the stack.
+
+### Intel HEX Loader
 
 The Intel HEX loader expects 16-bit addresses. It behaves as an Intel loader should, allowing empty blocks in the middle to be skipped. It will accept either UNIX-style LF endings or DOS/Windows CR/LF endings. The loader will accept an `EOF` (End of File, `0x01`) record or a data record (`0x00`) with zero length as the terminating condition.
 
