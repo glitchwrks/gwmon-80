@@ -194,7 +194,7 @@ CRLF:	MVI	A, CR
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;PRTCLS -- Print CR, LF, and a high bit terminated string
 ;
-;Falls through to PRTSTR1
+;Falls through to PRTSTR
 ;
 ;pre: HL contains pointer to start of string
 ;post: CR, LF, and string at HL printed to console
