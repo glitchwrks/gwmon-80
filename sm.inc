@@ -43,7 +43,7 @@ WSTART: LXI	SP, STACK - 6	;Reload stack pointer, don't clobber
 ;These strings are terminated by setting the high bit in the
 ;last character.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-SIGNON$:	db 'GWMON-80 0.9 S', 'M' + 80H
+SIGNON$:	db 'GWMON-80 1.0 S', 'M' + 80H
 PROMPT$:	db LF, '>' + 80H
 CSERR$:		db 'CKSUM '
 ERR$:		db 'ERRO', 'R' + 80H
