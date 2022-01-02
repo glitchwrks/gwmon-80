@@ -121,7 +121,7 @@ I/O modules need to implement three named subroutines:
 
 `IOSET` should initialize console device, if the devices are not already initialized. Any system-specific setup should be implemented in the customization file, not the I/O module.
 
-`CINNE` and `COUT` are character I/O routines for your console device (`CIN`, input with echo, is implemented elsewhere). They should not modify any registers other than the A register, so push everything else to the stack and pop it off after your routine. Both of these subroutines should terminate in a RET instruction. It's usually good practice to have CIN call CINNE.
+`CINNE` and `COUT` are character I/O routines for your console device (`CIN`, input with echo, is implemented elsewhere). They should not modify any registers (`CINNE` does modify the A register, of course), so push everything else to the stack and pop it off after your routine. Both of these subroutines should terminate in a RET instruction. It's usually good practice to have CIN call CINNE.
 
 Writing Customizations
 ----------------------

@@ -32,12 +32,15 @@ CINNE:	IN	CTLPRT
 	IN	DATPRT
 	RET
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;COUT -- Output a character to the console
+;
+;This routine *must* preserve the contents of the A register
+;or CIN will not function properly.
 ;
 ;pre: A register contains char to be printed
 ;post: character is printed to the console
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 COUT:	PUSH	PSW		;Save char to print on stack
 COUT1:  IN	CTLPRT
 	ANI	01H

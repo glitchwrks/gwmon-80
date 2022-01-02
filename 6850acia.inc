@@ -35,6 +35,9 @@ CINNE:	IN	CTLPRT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;COUT -- Output a character to the console
 ;
+;This routine *must* preserve the contents of the A register
+;or CIN will not function properly.
+;
 ;pre: A register contains char to be printed
 ;post: character is printed to the console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
