@@ -27,9 +27,9 @@ IOSET:	RET
 ;pre: console device is initialized
 ;post: received char is in A register
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CINNE:	PUSH B
-	PUSH D
-	PUSH H
+CINNE:	PUSH	B
+	PUSH	D
+	PUSH	H
 CINNE1:	MVI	E, GETCH
 	MVI	C, CONIO
 	CALL	BDOS
@@ -37,9 +37,9 @@ CINNE1:	MVI	E, GETCH
 	JZ	CINNE1
 	CPI	CANCEL
 	JZ	WSTART
-	POP H
-	POP D
-	POP B
+	POP	H
+	POP	D
+	POP	B
 	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -48,13 +48,13 @@ CINNE1:	MVI	E, GETCH
 ;pre: A register contains char to be printed
 ;post: character is printed to the console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-COUT:   PUSH B
-	PUSH D
-	PUSH H
-	MVI C, CONIO
-	MOV E, A
-	CALL BDOS
-	POP H
-	POP D
-	POP B
+COUT:   PUSH	B
+	PUSH	D
+	PUSH	H
+	MVI	C, CONIO
+	MOV	E, A
+	CALL	BDOS
+	POP	H
+	POP	D
+	POP	B
 	RET
