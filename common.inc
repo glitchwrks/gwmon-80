@@ -20,13 +20,14 @@ NEXTLOC	equ	CR		;Keystroke for next location in E
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;CIN -- Get a char from the console and echo
 ;
+;Returns through COUT.
+;
 ;pre: console device is initialized
 ;post: received char is in A register
 ;post: received char is echoed
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CIN:	CALL	CINNE
-	CALL	COUT
-	RET
+	JMP	COUT
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;HEXBYT -- Convert pair of ASCII characters to byte
