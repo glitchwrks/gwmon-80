@@ -1,20 +1,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;6850ACIA -- Console I/O Drivers for Motorola 6850 ACIA
+;CPM80IO -- Console I/O Drivers for CP/M-80 1.4 through 3.0
 ;
-;Set CTLPRT and DATPRT in the customization file.
+;This I/O module uses BDOS direct console I/O.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;CP/M Equates
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+BDOS	equ	0005H
+CONIO	equ	0006H
+GETCH	equ	0FFH
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;IOSET -- I/O specific setup routine
 ;
 ;pre: none
-;post: console serial channel is initialized
+;post: none
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-IOSET:	MVI	A, 03H
-	OUT	CTLPRT		;Reset ACIA
-	MVI	A, 15H
-	OUT	CTLPRT		;8N1, /16 bitrate
-	RET
+IOSET:	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;CINNE -- Get a char from the console, no echo
@@ -24,12 +27,19 @@ IOSET:	MVI	A, 03H
 ;pre: console device is initialized
 ;post: received char is in A register
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CINNE:	IN	CTLPRT
-	ANI	01H
-	JZ	CINNE
-	IN	DATPRT
+CINNE:	PUSH	B
+	PUSH	D
+	PUSH	H
+CINNE1:	MVI	E, GETCH
+	MVI	C, CONIO
+	CALL	BDOS
+	ORA	A
+	JZ	CINNE1
 	CPI	CANCEL
 	JZ	WSTART
+	POP	H
+	POP	D
+	POP	B
 	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -41,10 +51,15 @@ CINNE:	IN	CTLPRT
 ;pre: A register contains char to be printed
 ;post: character is printed to the console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-COUT:	PUSH	PSW		;Save A on stack
-COUT1:	IN	CTLPRT
-	ANI	02H		;Mask off transmitter status
-	JZ	COUT1
-	POP	PSW		;Restore A
-	OUT	DATPRT
+COUT:   PUSH	B
+	PUSH	D
+	PUSH	H
+	PUSH	PSW
+	MVI	C, CONIO
+	MOV	E, A
+	CALL	BDOS
+	POP	PSW
+	POP	H
+	POP	D
+	POP	B
 	RET
