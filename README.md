@@ -10,9 +10,10 @@ The following customizations are available and can be built using `make` and the
 
 | Make Target | SM | XM | Description                                        |
 |-------------|:--:|:--:|----------------------------------------------------|
-| `8085r3`    | Y  | N  | Glitch Works 8085 SBC rev 3                        | 
+| `8085r3`    | Y  | N  | Glitch Works 8085 SBC rev 3                        |
 | `cpm80`     | Y  | N  | CP/M-80 1.4 through 3.0, primarily for development |
 | `mits1`     | Y  | N  | MITS 88-2SIO and compatible (usually S-100)        |
+| `tdlsmb`    | Y  | N  | Techincal Design Labs SMB, TTY ACIA                |
 
 Components
 ----------

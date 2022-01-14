@@ -3,7 +3,7 @@ RMFLAGS		= -f
 ASM		= a85
 RM		= rm
 
-all: 8085r3 cpm80 mits1
+all: 8085r3 cpm80 mits1 tdlsmb
 
 8085r3: sm8085r3
 
@@ -19,6 +19,11 @@ mits1: smmits1
 
 smmits1:
 	$(ASM) smmits1.asm -o smmits1.hex -l smmits1.prn
+
+tdlsmb: smtdlsmb
+
+smtdlsmb:
+	$(ASM) smtdlsmb.asm -o smtdlsmb.hex -l smtdlsmb.prn
 
 clean:
 	$(RM) $(RMFLAGS) *.hex *.prn
