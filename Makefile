@@ -10,6 +10,11 @@ all: 8085r3 cpm80 cscc mits1 tdlsmb
 sm8085r3:
 	$(ASM) sm8085r3.asm -o sm8085r3.hex -l sm8085r3.prn
 
+8085r4: sm8085r4
+
+sm8085r4:
+	$(ASM) sm8085r4.asm -o sm8085r4.hex -l sm8085r4.prn
+
 cpm80: smcpm80
 
 smcpm80:
