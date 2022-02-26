@@ -30,6 +30,8 @@ CINNE:	IN	CTLPRT
 	ANI	02H
 	JZ	CINNE
 	IN	DATPRT
+	CPI	CANCEL
+	JZ	WSTART
 	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
