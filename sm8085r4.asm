@@ -23,7 +23,7 @@ STACK	equ	0E000H		;Stack below RAM-resident GWMON
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;CSTART -- Customization-specific cold start routine
 ;
-;Switches out ROM on 8085 SBC rev 3 and falls through to
+;Switches out ROM on 8085 SBC rev 4 and falls through to
 ;the monitor.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CSTART:	
