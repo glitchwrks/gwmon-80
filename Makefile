@@ -3,7 +3,7 @@ RMFLAGS		= -f
 ASM		= a85
 RM		= rm
 
-all: 8085r3 cpm80 mits1 tdlsmb
+all: 8085r3 cpm80 cscc mits1 tdlsmb
 
 8085r3: sm8085r3
 
@@ -14,6 +14,11 @@ cpm80: smcpm80
 
 smcpm80:
 	$(ASM) smcpm80.asm -o smcpm80.hex -l smcpm80.prn
+
+cscc: smcscc
+
+smcscc:
+	$(ASM) smcscc.asm -o smcscc.hex -l smcscc.prn
 
 mits1: smmits1
 
