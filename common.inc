@@ -73,6 +73,8 @@ ASCHEX:	SUI	'0'		;ASCII to decimal bias
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;HEXDMP -- Hex dump memory to console
 ;
+;TODO fix rollover from 0xFFFF, try D FF00 FFFF
+;
 ;pre: HL register pair contains starting address
 ;pre: DE register pair contains ending address
 ;post: contents of memory printed to console
