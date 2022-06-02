@@ -2,8 +2,6 @@
 ;TMS5501 -- Console I/O Drivers for Texas Instruments 
 ;           TMS 5501 I/O Controller 
 ;
-;Defaults to 9600 bps.
-;
 ;Set TMSBASE and SPEED in the customization file.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -14,13 +12,16 @@ STATPRT	equ	TMSBASE		;TMS 5501 status register
 BITRATE	equ	TMSBASE		;TMS 5501 bitrate register
 DATPRT	equ	TMSBASE+1	;TMS 5501 receive and transmit registers
 CMDPRT	equ	TMSBASE+2	;TMS 5501 command register
-INTMSK	equ	TMSBASE+3
+INTMSK	equ	TMSBASE+3	;TMS 5501 interrupt mask register
 
 TBE	equ	080H		;Mask for Transmitter Buffer Empty
 RDA	equ	040H		;Mask for Reciever Data Available
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;TMS 5501 Bitrate Table
+;
+;Set SPEED equal to one of these values in the customization
+;to select bitrate.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 B9600	equ	040H
 B4800	equ	020H
@@ -32,6 +33,9 @@ B110	equ	001H
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;IOSET -- I/O specific setup routine
+;
+;Resets the TMS 5501, sets the desired bitrate, one stop
+;bit, and unmasks all interrupts. Interrupts are disabled.
 ;
 ;pre: none
 ;post: console serial channel is initialized
