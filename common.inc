@@ -149,10 +149,8 @@ PRTHEX: PUSH	PSW		;Save A register on stack
 	RRC
 	RRC
 	RRC
-	ANI	0FH
 	CALL	PRTNIB		;Print high nybble
 	POP	PSW		;Restore A register
-	ANI	0FH
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;PRTNIB -- Print hex nybble on console
@@ -162,7 +160,8 @@ PRTHEX: PUSH	PSW		;Save A register on stack
 ;pre: A register contains nybble
 ;post: nybble printed to console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PRTNIB:	ADI	90H
+PRTNIB:	ANI	0FH		;Mask off low nybble
+	ADI	90H
 	DAA
 	ACI	40H
 	DAA
