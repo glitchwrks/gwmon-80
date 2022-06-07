@@ -79,6 +79,7 @@ ASCHEX:	SUI	'0'		;ASCII to decimal bias
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 HEXDMP:	CALL	CRLF
 	CALL	DUMP16
+	RC			;CY set, HL rolled over, done
 	MOV	A, D		;A = high byte of end address
 	CMP	H		;Compare current high address
 	RC			;Done if current high > end high
@@ -97,13 +98,17 @@ HEXDMP:	CALL	CRLF
 ;
 ;pre: HL register pair contains starting memory address
 ;post: memory from HL to HL + 16 printed to console
-;post: HL incremented to HL + 16
+;post: HL incremented to HL + 16 if no rollover
+;post: CY flag set if HL rolled over to 0x0000
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DUMP16:	CALL	PRTADR
 	MVI	C, 10H
 DUMP11:	CALL	PRTSPC
 	CALL	DMPLOC
 	INX	H
+	ANA	H		;Check for HL rollover
+	STC
+	RZ			;Return with CY set if we rolled over
 	DCR	C
 	RZ
 	JMP	DUMP11
