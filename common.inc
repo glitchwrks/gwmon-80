@@ -73,45 +73,37 @@ ASCHEX:	SUI	'0'		;ASCII to decimal bias
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;HEXDMP -- Hex dump memory to console
 ;
+;This routine prints the contents of memory starting at HL
+;and ending at DE in 16-byte blocks.
+;
 ;pre: HL register pair contains starting address
 ;pre: DE register pair contains ending address
 ;post: contents of memory printed to console
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-HEXDMP:	CALL	CRLF
-	CALL	DUMP16
-	RC			;CY set, HL rolled over, done
-	MOV	A, D		;A = high byte of end address
-	CMP	H		;Compare current high address
-	RC			;Done if current high > end high
-	MOV	A, E		;Low byte of end address
-	CMP	L		;Compare current low address
-	JNC	HEXDMP		;No CY, not done, continue dumping memory
-	MOV	A, D		;High byte of end address
-	CMP	H		;Are high bytes the same?
-	JNZ	HEXDMP		;Keep going if upper bytes aren't the same
-	RET			;Done if they are
+HEXDMP:	MVI	B, 00H		;Initialize B as completion flag
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;DUMP16 -- Dump 16 consecutive memory locations as hex
-;
-;Destroys contents of C register.
-;
-;pre: HL register pair contains starting memory address
-;post: memory from HL to HL + 16 printed to console
-;post: HL incremented to HL + 16 if no rollover
-;post: CY flag set if HL rolled over to 0x0000
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DUMP16:	CALL	PRTADR
-	MVI	C, 10H
-DUMP11:	CALL	PRTSPC
+HEXDM1:	CALL	CRLF
+	
+	CALL	PRTADR
+	MVI	C, 16		;C = line loop counter
+HEXDM2:	CALL	PRTSPC
 	CALL	DMPLOC
-	INX	H
-	ANA	H		;Check for HL rollover
-	STC
-	RZ			;Return with CY set if we rolled over
+	MOV	A, E		;A = low byte of end address
+	CMP	L		;Compare current low byte
+	JNZ	HEXDM3
+	MOV	A, D		;A = high byte of end address
+	CMP	H		;Compare current high byte
+	JNZ	HEXDM3
+	DCR	B		;B = nonzero, done
+
+HEXDM3:	INX	H		;Increment current address pointer
 	DCR	C
-	RZ
-	JMP	DUMP11
+	JNZ	HEXDM2		;Print more lines
+
+	MOV	A, B
+	ORA	A
+	JZ	HEXDM1		;Yes, dump more memory
+	RET			;No, done
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;PRTADR -- Print an address to the console
