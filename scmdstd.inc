@@ -41,10 +41,9 @@ EDTCM2:	INX	H
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;GOCMD -- Call out to a specified address
 ;
-;The stack is primed with the GWMON-80 warm start address,
-;then the address to call out to. Execution is transferred
-;via a RET. Called program can return control to GWMON-80
-;through a RET as long as the stack is not disturbed.
+;The stack is primed with the GWMON-80 warm start address.
+;Called program can return control to GWMON-80 through a RET
+;as long as the stack is not disturbed.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 GOCMD:	CALL	GETADR		;HL = Address to call
 	PCHL			;Go to specified address
