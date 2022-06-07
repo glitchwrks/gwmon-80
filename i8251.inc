@@ -11,13 +11,12 @@
 ;pre: none
 ;post: stack and console are initialized
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-IOSET:	LXI	H, INIUART$
-	MVI	B, 06H		;Length of USART init string
-IOSET1:	MOV	A, M
+IOSET:	MVI	A, 040H
 	OUT	CTLPRT
-	INX	H
-	DCR	B
-	JNZ	IOSET1
+	MVI	A, 04EH
+	OUT	CTLPRT
+	MVI	A, 037H
+	OUT	CTLPRT
 	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -50,6 +49,3 @@ COUT1:  IN	CTLPRT
 	POP	PSW		;Restore char to print
 	OUT	DATPRT
 	RET
-
-;Init string for the 8251, x16 clock, 8N1
-INIUART$:  db 00H, 00H, 00H, 40H, 4EH, 37H
