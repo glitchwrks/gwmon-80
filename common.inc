@@ -82,9 +82,7 @@ ASCHEX:	SUI	'0'		;ASCII to decimal bias
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 HEXDMP:	MVI	B, 00H		;Initialize B as completion flag
 
-HEXDM1:	CALL	CRLF
-	
-	CALL	PRTADR
+HEXDM1:	CALL	PRTADR
 	MVI	C, 16		;C = line loop counter
 HEXDM2:	CALL	PRTSPC
 	CALL	DMPLOC
@@ -108,15 +106,16 @@ HEXDM3:	INX	H		;Increment current address pointer
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;PRTADR -- Print an address to the console
 ;
-;Prints a 16-bit address, a space, and a colon. Destroys
-;A register contents.
+;Prints CR, LF, a 16-bit address, a space, and a colon. 
+;Destroys A register contents.
 ;
 ;Returns through COUT.
 ;
 ;pre: HL pair contains address to print
 ;post: HL printed to console as hex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PRTADR: MOV	A, H
+PRTADR: CALL	CRLF
+	MOV	A, H
 	CALL	PRTHEX
 	MOV	A, L
 	CALL	PRTHEX

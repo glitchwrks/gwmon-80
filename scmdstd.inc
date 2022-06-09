@@ -23,8 +23,7 @@ HDCMD:	CALL	GETADR		;HL = start address
 ;WSTART.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 EDTCMD:	CALL	GETADR		;HL = address to open
-EDTCM1:	CALL	CRLF
-	CALL	PRTADR		;Print location address
+EDTCM1:	CALL	PRTADR		;Print location address
 	CALL	PRTSPC
 	CALL	DMPLOC		;Print contents of location
 	CALL	PRTSPC
