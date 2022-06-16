@@ -91,8 +91,7 @@ LODCM1:	CALL	CINNE
 
 	CALL	GETHEX		;Get record type
 	JNZ	LODCM4		;Not Record Type 00 (DATA), done
-	ADD	C
-	MOV	C, A		;Checksum record type
+
 LODCM2:	CALL	GETHEX		;This is the main record processing loop
 	MOV	M, A		;Store char at HL
 	ADD	C
