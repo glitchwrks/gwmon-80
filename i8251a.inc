@@ -1,5 +1,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;I8251 -- Console I/O Drivers for Intel 8251 USART
+;I8251A -- Console I/O Drivers for Intel 8251A USART
+;
+;This driver is best suited for use with actual A revision
+;or later 8251 USARTs. For old USARTs, use i8251.inc
+;
+;This driver will still work with older USARTs, but you may
+;get a garbage character read in immediately after cold
+;start. Cold starts from an already running GWMON-80 may
+;produce garbage output.
 ;
 ;Set CTLPRT and DATPRT in the customization file.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
