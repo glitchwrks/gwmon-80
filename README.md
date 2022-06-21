@@ -13,8 +13,10 @@ The following customizations are available and can be built using `make` and the
 | `8085r3`    | Y  | N  | Glitch Works 8085 SBC rev 3                        |
 | `cpm80`     | Y  | N  | CP/M-80 1.4 through 3.0, primarily for development |
 | `cscc`      | Y  | N  | Cromemco SCC (Single Card Computer)                |
+| `imsai1`    | Y  | N  | IMSAI SIO2 and compatible (usually S-100)          |
 | `mits1`     | Y  | N  | MITS 88-2SIO and compatible (usually S-100)        |
 | `tdlsmb`    | Y  | N  | Technical Design Labs SMB, TTY ACIA                |
+| `vgzcb`     | Y  | N  | Vector Graphic ZCB with default USART addressing   |
 
 Components
 ----------
