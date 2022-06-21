@@ -5,8 +5,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;SETUP -- Prepare the system for running the
-;   monitor
+;SETUP -- Prepare the system for running the monitor
 ;
 ;pre: none
 ;post: stack and console are initialized

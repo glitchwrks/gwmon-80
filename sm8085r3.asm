@@ -21,14 +21,16 @@ STACK	equ	0E000H		;Stack below RAM-resident GWMON
 ;
 ;Switches out ROM on 8085 SBC rev 3 and falls through to
 ;the monitor.
+;
+;The label for CSTART is defined in VECTORS.INC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CSTART:	MVI	A, 010H		;Turn off ROM at 0x0000
+	MVI	A, 010H		;Turn off ROM at 0x0000
 	OUT	02H
 
 	INCLUDE	'sm.inc'	;The small monitor
 	INCLUDE	'scmdstd.inc'	;SM standard commnads
 	INCLUDE	'scmdnull.inc'	;Command table terminator
 
-	INCLUDE	'i8251.inc'	;Generic Motorola 6850 ACIA I/O
+	INCLUDE	'i8251a.inc'	;Generic Motorola 6850 ACIA I/O
 
 	END
