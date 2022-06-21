@@ -11,12 +11,13 @@
 ;pre: none
 ;post: stack and console are initialized
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-IOSET:	MVI	A, 040H
+IOSET:	LXI	H, INIUART$
+	MVI	B, INILEN	;Length of USART init string
+IOSET1:	MOV	A, M
 	OUT	CTLPRT
-	MVI	A, 04EH
-	OUT	CTLPRT
-	MVI	A, 037H
-	OUT	CTLPRT
+	INX	H
+	DCR	B
+	JNZ	IOSET1
 	RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -49,3 +50,15 @@ COUT1:  IN	CTLPRT
 	POP	PSW		;Restore char to print
 	OUT	DATPRT
 	RET
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;INIUART$ -- Init string for the 8251 USART
+;
+;This fixed-length string initializes an 8251 USART from an
+;unknown state. Sending three NULLs will ensure command
+;mode.
+;
+;INILEN specifies the length of the initialization string.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+INIUART$:	db 00H, 00H, 00H, 40H, 4EH, 37H
+INILEN	equ	* - INIUART$
