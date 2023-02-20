@@ -5,7 +5,12 @@ RM		= rm
 
 all: 8085r3 cpm80 cscc imsai1 mits1 tdlsmb vgzcb
 
+8085r1: sm8085r1
+
 8085r3: sm8085r3
+
+sm8085r1:
+	$(ASM) sm8085r1.asm -o sm8085r1.hex -l sm8085r1.prn
 
 sm8085r3:
 	$(ASM) sm8085r3.asm -o sm8085r3.hex -l sm8085r3.prn
