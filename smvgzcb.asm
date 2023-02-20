@@ -23,7 +23,7 @@ STACK	equ	0FFFFH		;Stack at top of scratchpad
 	INCLUDE	'vectors.inc'	;Standard GWMON-80 jump table
 
 	INCLUDE	'sm.inc'	;The small monitor
-	INCLUDE	'scmdstd.inc'	;SM standard commnads
+	INCLUDE	'scmdstd.inc'	;SM standard commands
 	INCLUDE	'scmdnull.inc'	;Command table terminator
 
 	INCLUDE	'i8251a.inc'	;Generic Intel 8251 I/O

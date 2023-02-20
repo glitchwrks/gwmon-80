@@ -24,7 +24,7 @@ STACK	equ	0F000H		;Stack below ROM
 	INCLUDE	'vectors.inc'	;Standard GWMON-80 jump table
 
 	INCLUDE	'sm.inc'	;The small monitor
-	INCLUDE	'scmdstd.inc'	;SM standard commnads
+	INCLUDE	'scmdstd.inc'	;SM standard commands
 	INCLUDE	'scmdnull.inc'	;Command table terminator
 
 	INCLUDE	'i8251.inc'	;Generic Intel 8251 I/O

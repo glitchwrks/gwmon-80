@@ -28,7 +28,7 @@ STACK	equ	0E000H		;Stack below RAM-resident GWMON
 	OUT	02H
 
 	INCLUDE	'sm.inc'	;The small monitor
-	INCLUDE	'scmdstd.inc'	;SM standard commnads
+	INCLUDE	'scmdstd.inc'	;SM standard commands
 	INCLUDE	'scmdnull.inc'	;Command table terminator
 
 	INCLUDE	'i8251a.inc'	;Generic Motorola 6850 ACIA I/O
