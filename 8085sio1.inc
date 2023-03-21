@@ -24,7 +24,7 @@ IOSET:	RET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;CINNE -- Get a char from the console, no echo
 ;
-;pre: BITTIME, HALFBIT initialized
+;pre: BITTIME, HALFBIT are initialized
 ;post: received char is in A register
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CINNE:	PUSH	B		;Preserve registers
@@ -43,8 +43,8 @@ CI2:	DCR	L		;us in the middle of the start bit
 	JNZ	CI2
 
 CI3:	LXI	H, BITTIME	;Delay one bit-time, since we are shifted
-CI4:	DCR	L		;a half-bit time through the start bit, all
-	JNZ	CI4		;this will keep us in the middle of bits for
+CI4:	DCR	L		;a half-bit time through the start bit, this
+	JNZ	CI4		;will keep us in the middle of bits for
 	DCR	H		;reliable sampling.
 	JNZ	CI4
 
@@ -53,7 +53,7 @@ CI4:	DCR	L		;a half-bit time through the start bit, all
 	DCR	B		;Determine if this is a stop bit
 	JZ	CI5		;Stop bit, done with char receive
 
-	MOV	A, C		;Not done, rotate a bit into C
+	MOV	A, C		;Not done, rotate a bit in CY into C
 	RAR
 	MOV	C, A
 	NOP			;Equalize COUT and CINNE loop times
@@ -73,12 +73,15 @@ CI5:	POP	H		;Restore HL
 ;This routine *must* preserve the contents of the A register
 ;or CIN will not function properly.
 ;
+;Interrupts are disabled to maintain critical timing in this
+;routine. They are unconditionally re-enabled before return.
+;
 ;pre: A register contains char to be printed
-;pre: BITTIME is initialized
+;pre: BITTIME, HALFBIT are initialized
 ;post: character is printed to the console
+;post: interrupts are enabled
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-COUT:	PUSH	PSW		;Save char to print on stack
-	PUSH	B		;Preserve registers
+COUT:	PUSH	B		;Preserve registers
 	PUSH	H
 	DI			;Must disable interrupts
 	MOV	C, A		;C = character to output
@@ -101,9 +104,9 @@ CO2:	DCR	L
 	MOV	C, A
 	DCR	B		;Decrement bit count
 	JNZ	CO1		;Not done, send more bits
-
-	POP	H		;Done, restore registers
+		
+	MOV	A, C		;Done, restore A with character just printed
+	POP	H		;Restore registers
 	POP	B
-	POP	PSW
 	EI
 	RET
