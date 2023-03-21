@@ -5,8 +5,6 @@
 ;serial I/O. This driver uses fixed bitrate constants for 
 ;delay routines used to pace serial transmit/receive.
 ;
-;See 8085SIO2 for a driver with automatic bitrate.
-;
 ;Derived from Intel Application Note AP-29, August 1977.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
