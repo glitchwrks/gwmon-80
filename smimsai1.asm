@@ -15,8 +15,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Hardware Equates
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CTLPRT	equ	003H		;Default SIO2 Channel A control port
-DATPRT	equ	002H		;Default SIO2 Channel A data port
+CHADAT	equ	02H		;Default SIO2 Channel A data port
+CHACTL	equ	03H		;Default SIO2 Channel A control port
+CHBDAT	equ	04H		;Default SIO2 Channel B data port
+CHBCTL	equ	05H		;Default SIO2 Channel B control port
+
+CTLPRT	equ	CHACTL		;Standard config is Channel A for console
+DATPRT	equ	CHADAT
+
 STACK	equ	0F000H		;Stack below ROM
 
 	ORG	0F000H
