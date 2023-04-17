@@ -3,7 +3,7 @@ RMFLAGS		= -f
 ASM		= a85
 RM		= rm
 
-all: 8085r1 8085r3 certek2 cpm80 cscc imsai1 mits1 tdlsmb vgzcb
+all: 8085r1 8085r3 certek2 cpm80 cscc imsai1 mits1 sds100 sds200 tdlsmb vgzcb
 
 8085r1: sm8085r1
 
@@ -39,6 +39,16 @@ mits1: smmits1
 
 smmits1:
 	$(ASM) smmits1.asm -o smmits1.hex -l smmits1.prn
+
+sds100: smsds100
+
+smsds100:
+	$(ASM) smsds100.asm -o smsds100.hex -l smsds100.prn
+
+sds200: smsds200
+
+smsds200:
+	$(ASM) smsds200.asm -o smsds200.hex -l smsds200.prn
 
 tdlsmb: smtdlsmb
 
