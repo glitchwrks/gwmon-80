@@ -53,6 +53,6 @@ CSTART:	IN	SBCCTL		;Turn off autostart circuit
 	INCLUDE	'scmdstd.inc'	;SM standard commands
 	INCLUDE	'scmdnull.inc'	;Command table terminator
 
-	INCLUDE	'i8251a.inc'	;Generic Intel 8251 I/O
+	INCLUDE	'i8251.inc'	;Generic Intel 8251 I/O
 
 	END
