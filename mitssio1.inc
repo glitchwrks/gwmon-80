@@ -1,12 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;MITSSIO -- Console I/O Drivers for MITS 88-SIO Board
+;MITSSIO1 -- Console I/O Drivers for MITS 88-SIO rev 1 Board
 ;
 ;Set CTLPRT and DATPRT in the customization file.
 ;
-;The MITS 88-SIO uses a standard 40-pin UART (e.g. TR1402),
-;but due to the nature of systems with 40-pin UARTs, it is
-;not practical to write a single I/O module for them. The
-;system designer can choose how to map status bits, and
+;The MITS 88-SIO rev 1 uses a standard 40-pin UART (e.g. 
+;TR1402), but due to the nature of systems with 40-pin UARTs
+;it is not practical to write a single I/O module for them. 
+;The system designer can choose how to map status bits, and
 ;their polarities. Interrupt capabilities, if present, are
 ;specific to the system or board.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -14,8 +14,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Hardware Equates
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-RRFULL	equ	00100000b	;Receive register full mask
-TREMPTY	equ	00000010b	;Transmit register empty mask
+RRFULL	equ	00000001b	;Receive register full mask
+TREMPTY	equ	10000000b	;Transmit register empty mask
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;IOSET -- I/O specific setup routine
@@ -37,7 +37,7 @@ IOSET:	MVI	A, 03H		;Disable interrupts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CINNE:	IN	CTLPRT
 	ANI	RRFULL
-	JZ	CINNE
+	JNZ	CINNE
 	IN	DATPRT
 	CPI	CANCEL
 	JZ	WSTART
@@ -55,7 +55,7 @@ CINNE:	IN	CTLPRT
 COUT:	PUSH	PSW		;Save A on stack
 COUT1:	IN	CTLPRT
 	ANI	TREMPTY		;Mask off transmitter status
-	JZ	COUT1
+	JNZ	COUT1
 	POP	PSW		;Restore A
 	OUT	DATPRT
 	RET
