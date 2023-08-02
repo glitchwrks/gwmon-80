@@ -18,6 +18,7 @@ The following customizations are available and can be built using `make` and the
 | `imsai1`    | Y  | N  | IMSAI SIO2 and compatible (usually S-100)          |
 | `mits1`     | Y  | N  | MITS 88-2SIO and compatible (usually S-100)        |
 | `mits2`     | Y  | N  | MITS 88-SIO rev 1 and compatible (usually S-100)   |
+| `mits3`     | Y  | N  | MITS Turnkey board (usually S-100)                 |
 | `sds100`    | Y  | N  | SD Systems SBC-100                                 |
 | `sds200`    | Y  | N  | SD Systems SBC-200                                 |
 | `tdlsmb`    | Y  | N  | Technical Design Labs SMB, TTY ACIA                |
