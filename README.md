@@ -144,13 +144,12 @@ In addition to bringing together the components of GWMON-80, a customization sho
 
 See `smmits1.asm` for a simple example of how to piece together a customization for a simple system.
 
-Tools
------
+Old Tools/Hex Dump Conversion
+-----------------------------
 
-The `tools/` directory contains utilties for working with GWMON-80:
+There used to be a `tools/` subdirectory to this project, which contained a program to convert `GWMON-80` hex dumps into binary files; however, [SRecord](https://srecord.sourceforge.net/) is apparently capable of doing that with the `-hexdump` switch. The Ruby script that used to be included here can be found on [this commit](https://github.com/glitchwrks/gwmon-80/commit/467ffccb7f4aec06d811ec0b46cde98a42c9a41f) and includes sample data for testing.
 
-* `gwmon2bin.rb` is a Ruby script for converting GWMON-80 `D` command dumps to binary files
-* `gwmon2bin_sample.txt` is a sample `D` command dump for use with `gwmon2bin.rb`
+To convert `D` command output using `SRecord`, capture `D` output using your terminal emulator, trim any leading or trailing non-hexdump content, and use the `-hexdump` input option.
 
 Contributing
 ------------
