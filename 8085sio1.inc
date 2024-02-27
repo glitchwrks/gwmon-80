@@ -14,12 +14,14 @@ HALFBIT	equ	0109H		;Half-bit time
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;SETUP -- Prepare the system for running the monitor
 ;
-;Nothing to do here.
+;Output a NUL to clear the line after a reset. Returns
+;through COUT.
 ;
 ;pre: none
 ;post: console ready for I/O
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-IOSET:	RET
+IOSET:	XRA	A		;NUL in A
+	JMP	COUT		;Clear the line
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;CINNE -- Get a char from the console, no echo
