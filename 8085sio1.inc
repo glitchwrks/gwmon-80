@@ -81,7 +81,8 @@ CI5:	POP	H		;Restore HL
 ;post: character is printed to the console
 ;post: interrupts are enabled
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-COUT:	PUSH	B		;Preserve registers
+COUT:	PUSH	PSW		;Preserve char in A
+	PUSH	B		;Preserve registers
 	PUSH	H
 	DI			;Must disable interrupts
 	MOV	C, A		;C = character to output
@@ -105,8 +106,10 @@ CO2:	DCR	L
 	DCR	B		;Decrement bit count
 	JNZ	CO1		;Not done, send more bits
 		
-	MOV	A, C		;Done, restore A with character just printed
 	POP	H		;Restore registers
 	POP	B
 	EI
+
+	POP	PSW		;A = char printed
+
 	RET
